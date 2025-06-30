@@ -6,9 +6,17 @@ import { MyRuntimeProvider } from "@/components/assistant-ui/MyRuntimeProvider";
 import { Thread } from "@/components/assistant-ui/thread";
 import { SignedIn, UserButton } from "@clerk/nextjs";
 import { useParams } from "next/navigation";
+import Link from "next/link";
 import OnboardingDocs from "@/components/OnboardingDocs";
 import { Button } from "@/components/ui/button";
 import { ProjectDetail } from "@/types";
+
+interface eventWithTime {
+  type: number;
+  data: unknown;
+  timestamp: number;
+  [key: string]: unknown;
+}
 
 interface SessionMeta {
   sessionId: string;
@@ -22,10 +30,9 @@ export default function SessionReplaysPage() {
   const projectId = typeof params.projectid === 'string' ? params.projectid : Array.isArray(params.projectid) ? params.projectid[0] : '';
   const [sessions, setSessions] = useState<SessionMeta[]>([]);
   const [selectedSession, setSelectedSession] = useState<SessionMeta | null>(null);
-  const [events, setEvents] = useState<any[]>([]);
+  const [events, setEvents] = useState<eventWithTime[]>([]);
   const [loading, setLoading] = useState(false);
   const [sessionsLoading, setSessionsLoading] = useState(true);
-  const [timeLeft, setTimeLeft] = useState(0);
   const [projectDetail, setProjectDetail] = useState<ProjectDetail | null>(null);
 
   useEffect(() => {
@@ -37,29 +44,17 @@ export default function SessionReplaysPage() {
     });
     
     getSessionReplayIds(projectId).then((data) => {
-      setSessions(Array.isArray(data) ? data : []);
+      setSessions(Array.isArray(data) ? data as SessionMeta[] : []);
       setSessionsLoading(false);
     });
   }, [projectId]);
-
-  useEffect(() => {
-    const updateCountdown = () => {
-      const now = new Date();
-      const tomorrow = new Date(now);
-      tomorrow.setHours(24, 0, 0, 0);
-      setTimeLeft(Math.max(0, Math.floor((tomorrow.getTime() - now.getTime()) / 1000)));
-    };
-    updateCountdown();
-    const interval = setInterval(updateCountdown, 1000);
-    return () => clearInterval(interval);
-  }, []);
 
   const handleSelectSession = async (session: SessionMeta) => {
     setSelectedSession(session);
     setLoading(true);
     setEvents([]);
     const events = await getSessionReplayEvents(session.sessionId);
-    setEvents(events);
+    setEvents(events as eventWithTime[]);
     setLoading(false);
   };
 
@@ -67,10 +62,10 @@ export default function SessionReplaysPage() {
     <div className="min-h-screen w-full bg-[#f7f9fb]">
       {/* Navbar */}
       <header className="w-full px-6 py-4 flex items-center justify-between border-b border-gray-100 bg-white sticky top-0 z-20">
-        <a href="/" className="flex items-center gap-2 hover:opacity-80 transition">
+        <Link href="/" className="flex items-center gap-2 hover:opacity-80 transition">
           <div className="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center text-white font-bold text-lg">C</div>
           <span className="text-xl font-bold tracking-tight text-gray-900">CartpetAI</span>
-        </a>
+        </Link>
         <SignedIn>
           <UserButton afterSignOutUrl="/" />
         </SignedIn>
@@ -80,9 +75,9 @@ export default function SessionReplaysPage() {
         {projectDetail && (
           <div className="mb-6">
             <div className="flex items-center justify-between mb-4">
-              <a href="/projects" className="text-gray-600 hover:text-gray-900 transition-colors text-sm font-medium flex items-center gap-1">
+              <Link href="/projects" className="text-gray-600 hover:text-gray-900 transition-colors text-sm font-medium flex items-center gap-1">
                 ← Back to Projects
-              </a>
+              </Link>
             </div>
             <h1 className="text-2xl font-bold text-gray-900 mb-2">{projectDetail.name}</h1>
             <p className="text-gray-600">Session Replays</p>
@@ -103,7 +98,7 @@ export default function SessionReplaysPage() {
                   if (projectId) {
                     setSessionsLoading(true);
                     getSessionReplayIds(projectId).then((data) => {
-                      setSessions(Array.isArray(data) ? data : []);
+                      setSessions(Array.isArray(data) ? data as SessionMeta[] : []);
                       setSessionsLoading(false);
                     });
                   }
@@ -195,29 +190,28 @@ export default function SessionReplaysPage() {
   );
 }
 
-function RRWebPlayer({ events }: { events: any[] }) {
+function RRWebPlayer({ events }: { events: eventWithTime[] }) {
   const [mounted, setMounted] = React.useState(false);
   const playerRef = React.useRef<HTMLDivElement>(null);
-  const playerInstanceRef = React.useRef<any>(null);
 
   React.useEffect(() => {
     setMounted(true);
+    return () => {
+      // cleanup
+    };
   }, []);
 
   React.useEffect(() => {
     if (!mounted || !playerRef.current || !events.length) return;
-    playerRef.current.innerHTML = "";
-    if (playerInstanceRef.current) {
-      try {
-        playerInstanceRef.current.destroy?.();
-      } catch {}
-      playerInstanceRef.current = null;
-    }
+    
+    const currentPlayerRef = playerRef.current;
+    currentPlayerRef.innerHTML = "";
+    
     const createPlayer = async () => {
       try {
         const mod = await import("rrweb-player");
-        playerInstanceRef.current = new mod.default({
-          target: playerRef.current as unknown as HTMLElement,
+        new mod.default({
+          target: currentPlayerRef as unknown as HTMLElement,
           props: {
             events,
             width: 1024,
@@ -236,14 +230,8 @@ function RRWebPlayer({ events }: { events: any[] }) {
     };
     createPlayer();
     return () => {
-      if (playerInstanceRef.current) {
-        try {
-          playerInstanceRef.current.destroy?.();
-        } catch {}
-        playerInstanceRef.current = null;
-      }
-      if (playerRef.current) {
-        playerRef.current.innerHTML = "";
+      if (currentPlayerRef) {
+        currentPlayerRef.innerHTML = "";
       }
     };
   }, [events, mounted]);

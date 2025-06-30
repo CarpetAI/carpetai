@@ -1,4 +1,4 @@
-import Image from "next/image";
+import Link from "next/link";
 
 export default function Home() {
   return (
@@ -6,10 +6,10 @@ export default function Home() {
       {/* Navbar */}
       <header className="w-full px-6 py-4 flex items-center justify-between border-b border-gray-100 bg-white">
         <div className="flex items-center gap-2">
-          <a href="/" className="flex items-center gap-2 hover:opacity-80 transition">
+          <Link href="/" className="flex items-center gap-2 hover:opacity-80 transition">
             <div className="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center text-white font-bold text-lg">C</div>
             <span className="text-xl font-bold tracking-tight text-gray-900">CartpetAI</span>
-          </a>
+          </Link>
         </div>
         <div className="flex gap-2">
           <a href="/projects" className="px-5 py-2 rounded-lg bg-blue-600 text-white font-semibold shadow hover:bg-blue-700 transition">User access</a>

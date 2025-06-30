@@ -9,12 +9,9 @@ import {
 import type { FC } from "react";
 import {
   ArrowDownIcon,
-  CheckIcon,
   ChevronLeftIcon,
   ChevronRightIcon,
-  CopyIcon,
   PencilIcon,
-  RefreshCwIcon,
   SendHorizontalIcon,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -75,7 +72,7 @@ const ThreadWelcome: FC = () => {
       <div className="flex w-full max-w-[var(--thread-max-width)] flex-grow flex-col">
         <div className="flex w-full flex-grow flex-col items-center justify-center">
           <p className="mt-4 font-medium">
-            What do you want know about your users?
+            What do you want to know about your users?
           </p>
         </div>
         <ThreadWelcomeSuggestions />
@@ -89,13 +86,13 @@ const ThreadWelcomeSuggestions: FC = () => {
     <div className="mt-3 flex w-full items-stretch justify-center">
       <ThreadPrimitive.Suggestion
         className="hover:bg-muted/80 flex w-full flex-col items-center justify-center rounded-lg border p-3 transition-colors ease-in"
-        prompt="Analyze the user's behavior patterns and suggest improvements"
+        prompt="Analyze the user&apos;s behavior patterns and suggest improvements"
         method="replace"
         autoSend
       >
-        <span className="line-clamp-2 text-ellipsis text-sm font-semibold">
-          Analyze the user's behavior patterns and suggest improvements
-        </span>
+                  <span className="line-clamp-2 text-ellipsis text-sm font-semibold">
+            Analyze the user&apos;s behavior patterns and suggest improvements
+          </span>
       </ThreadPrimitive.Suggestion>
     </div>
   );
@@ -197,8 +194,6 @@ const AssistantMessage: FC = () => {
         <MessageError />
       </div>
 
-      {/* <AssistantActionBar /> */}
-
       <BranchPicker className="col-start-2 row-start-2 -ml-2 mr-2" />
     </MessagePrimitive.Root>
   );
@@ -211,33 +206,6 @@ const MessageError: FC = () => {
         <ErrorPrimitive.Message className="line-clamp-2" />
       </ErrorPrimitive.Root>
     </MessagePrimitive.Error>
-  );
-};
-
-const AssistantActionBar: FC = () => {
-  return (
-    <ActionBarPrimitive.Root
-      hideWhenRunning
-      autohide="not-last"
-      autohideFloat="single-branch"
-      className="text-muted-foreground flex gap-1 col-start-3 row-start-2 -ml-1 data-[floating]:bg-background data-[floating]:absolute data-[floating]:rounded-md data-[floating]:border data-[floating]:p-1 data-[floating]:shadow-sm"
-    >
-      <ActionBarPrimitive.Copy asChild>
-        <TooltipIconButton tooltip="Copy">
-          <MessagePrimitive.If copied>
-            <CheckIcon />
-          </MessagePrimitive.If>
-          <MessagePrimitive.If copied={false}>
-            <CopyIcon />
-          </MessagePrimitive.If>
-        </TooltipIconButton>
-      </ActionBarPrimitive.Copy>
-      <ActionBarPrimitive.Reload asChild>
-        <TooltipIconButton tooltip="Refresh">
-          <RefreshCwIcon />
-        </TooltipIconButton>
-      </ActionBarPrimitive.Reload>
-    </ActionBarPrimitive.Root>
   );
 };
 

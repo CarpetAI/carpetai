@@ -7,7 +7,6 @@ import { useUser } from "@clerk/nextjs";
 import { Project } from "@/types";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -45,10 +44,10 @@ export default function ProjectsPage() {
   return (
     <div className="min-h-screen bg-white flex flex-col dark:bg-[#18181b]">
       <header className="w-full px-6 py-4 flex items-center justify-between border-b border-gray-100 dark:border-gray-800 bg-white dark:bg-[#18181b]">
-        <a href="/" className="flex items-center gap-2 hover:opacity-80 transition">
+        <Link href="/" className="flex items-center gap-2 hover:opacity-80 transition">
           <div className="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center text-white font-bold text-lg">C</div>
           <span className="text-xl font-bold tracking-tight text-gray-900 dark:text-white">CartpetAI</span>
-        </a>
+        </Link>
       </header>
       <main className="px-4 pt-12 pb-12">
         <div className="max-w-6xl w-full mx-auto">
@@ -108,7 +107,7 @@ export default function ProjectsPage() {
             <div className="text-blue-600 text-center font-semibold">Loading projects...</div>
           ) : projects.length === 0 ? (
             <div className="text-center text-gray-500 dark:text-gray-400">
-              <p>No projects yet. Click "Create New Project" above to get started.</p>
+              <p>No projects yet. Click &quot;Create New Project&quot; above to get started.</p>
             </div>
           ) : (
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">

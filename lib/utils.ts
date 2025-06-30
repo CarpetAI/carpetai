@@ -10,7 +10,7 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 
-export const getSessionReplayIds = async (projectId: string): Promise<any[]> => {
+export const getSessionReplayIds = async (projectId: string): Promise<unknown[]> => {
   try {
     console.log('API_URL', API_URL);
     const response = await axios.get(`${API_URL}/api/session-ids`, {
@@ -26,7 +26,7 @@ export const getSessionReplayIds = async (projectId: string): Promise<any[]> => 
   }
 };
 
-export const getSessionReplayEvents = async (sessionId: string): Promise<any[]> => {
+export const getSessionReplayEvents = async (sessionId: string): Promise<unknown[]> => {
   try {
     const response = await axios.get(`${API_URL}/api/sessions/${sessionId}/events`, {
       headers: {
