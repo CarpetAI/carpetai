@@ -135,7 +135,7 @@ export default function SessionReplaysPage() {
                 >
                   <div className="font-medium mb-1 truncate">{session.sessionId}</div>
                   <div className="text-gray-600 text-xs mb-1">
-                    {new Date(session.timestamp).toLocaleString()}
+                    {new Date(session.timestamp * 1000).toLocaleString()}
                   </div>
                   <div className="text-gray-500 text-xs truncate">{session.url}</div>
                 </div>
