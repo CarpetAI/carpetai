@@ -40,7 +40,7 @@ export const getSessionReplayEvents = async (sessionId: string): Promise<unknown
   }
 };
 
-export async function getRagAnswer(actionId: string, projectId: string): Promise<unknown> {
+export async function getRagAnswer(actionId: string, projectId: string): Promise<any> {
   try {
     const response = await axios.post(`${API_URL}/api/rag/query`, { action_id: actionId, project_id: projectId });
     return response.data;
