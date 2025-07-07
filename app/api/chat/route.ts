@@ -8,23 +8,33 @@ export const runtime = "edge";
 export const maxDuration = 30;
 
 export async function POST(req: Request) {
-  const { messages, tools } = await req.json();
+  const { messages, tools, actionIds, projectId } = await req.json();
 
   const system = `
  You are an AI assistant that analyzes user session replay data to answer questions about user behavior.
 Your task is to analyze session replay data and provide clear, evidence-based answers about what users were doing, their goals, and any issues they encountered.
 
+Available Action IDs: ${JSON.stringify(actionIds || [])}
+
+IMPORTANT: When users ask questions about specific actions or behaviors, you should use the getRelavantReplayData tool with the appropriate actionId to retrieve the relevant session replay logs. This will give you the most accurate and up-to-date information about user behavior.
+
+The data returned will include context events organized by session, showing the user's journey and actions leading up to and following the target action.
+
 Guidelines:
-1. Focus on the most relevant chunks (higher relevance scores)
-2. If multiple sessions are present, identify patterns across sessions
-3. For cross-session analysis, note which session each behavior occurred in
-4. Provide specific, actionable insights based on the evidence
-5. Be clear about what the user was doing, when, and why
-6. If the data doesn't contain enough information, acknowledge this
-7. Use the timing information to understand the user's journey
-8. Identify patterns, frustrations, or successful interactions
-9. For pattern analysis, look for common behaviors, issues, or trends across sessions
-10. Be concise but thorough in your analysis
+1. Use action IDs to retrieve relevant logs when analyzing specific user actions or behaviors
+2. Analyze the context events to understand the full user journey around the target action
+3. Pay attention to timestamps to understand the sequence and timing of user actions
+4. Identify patterns in user behavior across multiple sessions if present
+5. Look for user frustrations (repeated clicks, scrolling, etc.) or successful interactions
+6. Consider the element types and action strings to understand what users were interacting with
+7. Provide specific, actionable insights based on the evidence
+8. Be clear about what the user was doing, when, and why
+9. If the data doesn't contain enough information, acknowledge this
+10. Use the timing information to understand the user's journey and flow
+11. For pattern analysis, look for common behaviors, issues, or trends across sessions
+12. Be concise but thorough in your analysis
+13. Always use the getRelavantReplayData tool when you need to access session replay data
+14. When analyzing the data, consider the user's intent and goals based on their actions
   `;
 
   const result = streamText({
@@ -35,15 +45,14 @@ Guidelines:
     system,
     tools: {
       ...frontendTools(tools),
-      answerToReplayQuestion: {
-        description: "Use session replay data to answer a question about user behavior",
+      getRelavantReplayData: {
+        description: "Retrieve relevant replay data for a specific action ID",
         parameters: z.object({
-          question: z.string(),
+          actionId: z.string(),
         }),
-        execute: async ({ question }) => {
-          const answer = await getRagAnswer(question);
-
-          return answer;
+        execute: async ({ actionId }) => {
+          const answer = await getRagAnswer(actionId, projectId);
+          return answer.context_events_by_session;
         },
       },
     },

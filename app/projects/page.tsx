@@ -45,7 +45,7 @@ export default function ProjectsPage() {
     <div className="min-h-screen bg-white flex flex-col dark:bg-[#18181b]">
       <header className="w-full px-6 py-4 flex items-center justify-between border-b border-gray-100 dark:border-gray-800 bg-white dark:bg-[#18181b]">
         <Link href="/" className="flex items-center gap-2 hover:opacity-80 transition">
-          <div className="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center text-white font-bold text-lg">C</div>
+          <img src="/logo.jpg" alt="CartpetAI Logo" className="w-8 h-8 rounded-full object-contain bg-white" />
           <span className="text-xl font-bold tracking-tight text-gray-900 dark:text-white">CartpetAI</span>
         </Link>
       </header>

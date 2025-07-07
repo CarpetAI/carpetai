@@ -60,6 +60,37 @@ function CodeBlockWithCopy({ code, onCopy, copied }: { code: string; onCopy: () 
   );
 }
 
+function CopyPromptCard({ apiKey }: { apiKey: string | undefined }) {
+  const [copied, setCopied] = useState(false);
+  const react = frameworks.find(f => f.key === "react");
+  const nextjs = frameworks.find(f => f.key === "nextjs");
+  const prompt = `Carpet is an AI-powered session replay and analytics tool for web apps. It helps teams understand user behavior by recording sessions and providing actionable insights.\n\nAsk the user for their Carpet API key.\n\n---\n\n## React Installation\n\n1. Install the package:\n\n${react?.steps[0].code}\n\n2. Add the session recorder to your app as shown below:\n\n${react?.steps[0].extra}\n\n---\n\n## Next.js Installation\n\n1. Install the package:\n\n${nextjs?.steps[0].code}\n\n2. Add the session recorder to your app as shown below:\n\n${nextjs?.steps[0].extra}\n\n---\n\nGitHub: https://github.com/CarpetAI/carpetai-rrwebrecorder`;
+
+  return (
+    <div className="mb-8">
+      <div className="rounded-2xl border border-gray-200 bg-[#fcfcf7] p-6 flex items-center gap-6 shadow-sm relative">
+        <div className="absolute left-4 top-4 opacity-10 pointer-events-none select-none" style={{fontSize: 80, lineHeight: 1}}>
+          <span role="img" aria-label="carpet"></span>
+        </div>
+        <div className="flex-1 z-10">
+          <div className="text-lg font-semibold mb-1">Copy install prompt for Carpet</div>
+          <div className="text-gray-600 text-base mb-2">Share this prompt with an AI agent to get started faster.</div>
+        </div>
+        <Button
+          onClick={() => {
+            navigator.clipboard.writeText(prompt);
+            setCopied(true);
+            setTimeout(() => setCopied(false), 1200);
+          }}
+          className="z-10 px-6 py-2 text-base font-semibold rounded-lg bg-gray-900 text-white hover:bg-gray-800 transition"
+        >
+          {copied ? "Copied!" : "Copy prompt"}
+        </Button>
+      </div>
+    </div>
+  );
+}
+
 interface OnboardingDocsProps {
   projectId: string;
 }
@@ -90,6 +121,7 @@ export default function OnboardingDocs({ projectId }: OnboardingDocsProps) {
 
   return (
     <div className="max-w-2xl mx-auto my-8">
+      <CopyPromptCard apiKey={projectDetail?.publicApiKey} />
       <Card className="p-6 dark:bg-[#23272f] dark:border-gray-800">
         <h1 className="text-2xl font-bold mb-6 dark:text-white">API Quickstart</h1>
         {/* API Key Section */}

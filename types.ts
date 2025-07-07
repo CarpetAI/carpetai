@@ -10,3 +10,8 @@ export interface ProjectDetail {
   publicApiKey: string;
   createdAt: number;
 }
+
+export interface ActionId {
+  id: string;
+  count: number;
+}

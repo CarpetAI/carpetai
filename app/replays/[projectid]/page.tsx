@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { getSessionReplayIds, getSessionReplayEvents, getProjectDetail } from '../../../lib/utils';
+import { getSessionReplayIds, getSessionReplayEvents, getProjectDetail, getProjectActionIds } from '../../../lib/utils';
 import { MyRuntimeProvider } from "@/components/assistant-ui/MyRuntimeProvider";
 import { Thread } from "@/components/assistant-ui/thread";
 import { SignedIn, UserButton } from "@clerk/nextjs";
@@ -9,7 +9,8 @@ import { useParams } from "next/navigation";
 import Link from "next/link";
 import OnboardingDocs from "@/components/OnboardingDocs";
 import { Button } from "@/components/ui/button";
-import { ProjectDetail } from "@/types";
+import { ProjectDetail, ActionId } from "@/types";
+import { ActionIdsChart } from "@/components/ActionIdsChart";
 
 interface eventWithTime {
   type: number;
@@ -34,6 +35,7 @@ export default function SessionReplaysPage() {
   const [loading, setLoading] = useState(false);
   const [sessionsLoading, setSessionsLoading] = useState(true);
   const [projectDetail, setProjectDetail] = useState<ProjectDetail | null>(null);
+  const [actionIds, setActionIds] = useState<ActionId[]>([]);
 
   useEffect(() => {
     if (!projectId) return;
@@ -46,6 +48,10 @@ export default function SessionReplaysPage() {
     getSessionReplayIds(projectId).then((data) => {
       setSessions(Array.isArray(data) ? data as SessionMeta[] : []);
       setSessionsLoading(false);
+    });
+
+    getProjectActionIds(projectId).then((data) => {
+      setActionIds(data);
     });
   }, [projectId]);
 
@@ -63,7 +69,7 @@ export default function SessionReplaysPage() {
       {/* Navbar */}
       <header className="w-full px-6 py-4 flex items-center justify-between border-b border-gray-100 bg-white sticky top-0 z-20">
         <Link href="/" className="flex items-center gap-2 hover:opacity-80 transition">
-          <div className="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center text-white font-bold text-lg">C</div>
+          <img src="/logo.jpg" alt="CartpetAI Logo" className="w-8 h-8 rounded-full object-contain bg-white" />
           <span className="text-xl font-bold tracking-tight text-gray-900">CartpetAI</span>
         </Link>
         <SignedIn>
@@ -83,6 +89,8 @@ export default function SessionReplaysPage() {
             <p className="text-gray-600">Session Replays</p>
           </div>
         )}
+        
+        <ActionIdsChart actionIds={actionIds} />
         {sessionsLoading ? (
           <div className="flex justify-center items-center py-12">
             <div className="text-gray-600">Loading sessions...</div>
@@ -177,7 +185,7 @@ export default function SessionReplaysPage() {
               <h2 className="text-base font-semibold">AI Assistant</h2>
             </div>
             <div className="flex-1 overflow-hidden">
-              <MyRuntimeProvider>
+              <MyRuntimeProvider projectId={projectId} actionIds={actionIds}>
                 <Thread />
               </MyRuntimeProvider>
             </div>

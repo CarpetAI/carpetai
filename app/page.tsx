@@ -7,7 +7,7 @@ export default function Home() {
       <header className="w-full px-6 py-4 flex items-center justify-between border-b border-gray-100 bg-white">
         <div className="flex items-center gap-2">
           <Link href="/" className="flex items-center gap-2 hover:opacity-80 transition">
-            <div className="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center text-white font-bold text-lg">C</div>
+            <img src="/logo.jpg" alt="CartpetAI Logo" className="w-8 h-8 rounded-full object-contain bg-white" />
             <span className="text-xl font-bold tracking-tight text-gray-900">CartpetAI</span>
           </Link>
         </div>
@@ -36,7 +36,7 @@ export default function Home() {
             Understand your users with <span className="text-blue-600">AI-powered</span> <br className="hidden sm:block" />Session Replays & Analytics
           </h1>
           <p className="text-lg sm:text-xl text-gray-600 mb-8 max-w-2xl">
-            Instantly replay user sessions, uncover actionable insights, and ask our AI assistant anything about user behavior. Make smarter product decisions, faster.
+            Know what to build next with our AI-powered session replays and analytics.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 mb-8">
             <a

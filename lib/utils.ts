@@ -2,7 +2,7 @@ import axios from 'axios';
 import { clsx, type ClassValue } from "clsx"
 import { twMerge } from "tailwind-merge"
 import { API_URL } from './constants';
-import { Project } from '@/types';
+import { ActionId, Project } from '@/types';
 import { ProjectDetail } from '@/types';
 
 export function cn(...inputs: ClassValue[]) {
@@ -40,13 +40,13 @@ export const getSessionReplayEvents = async (sessionId: string): Promise<unknown
   }
 };
 
-export async function getRagAnswer(question: string): Promise<string> {
+export async function getRagAnswer(actionId: string, projectId: string): Promise<any> {
   try {
-    const response = await axios.post(`${API_URL}/api/rag/query`, { question });
-    return response.data?.context || '';
+    const response = await axios.post(`${API_URL}/api/rag/query`, { action_id: actionId, project_id: projectId });
+    return response.data;
   } catch (error) {
     console.error('Error fetching RAG answer:', error);
-    return '';
+    return null;
   }
 }
 
@@ -82,5 +82,19 @@ export const getProjectDetail = async (projectId: string): Promise<ProjectDetail
   } catch (error) {
     console.error('Error fetching project detail:', error);
     throw error;
+  }
+};
+
+export const getProjectActionIds = async (projectId: string): Promise<ActionId[]> => {
+  try {
+    const response = await axios.get(`${API_URL}/api/projects/${projectId}/action-ids`, {
+      headers: {
+        'ngrok-skip-browser-warning': 'true',
+      },
+    });
+    return response.data.action_ids || [];
+  } catch (error) {
+    console.error('Error fetching project action IDs:', error);
+    return [];
   }
 };
