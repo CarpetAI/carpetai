@@ -13,6 +13,8 @@ function formatActionLabel(id: string) {
 }
 
 export function ActionIdsChart({ actionIds }: ActionIdsChartProps) {
+  const [selectedIds, setSelectedIds] = useState<string[]>([]);
+
   if (!actionIds || actionIds.length === 0) {
     return null;
   }
@@ -27,9 +29,9 @@ export function ActionIdsChart({ actionIds }: ActionIdsChartProps) {
 
   const sortedActionIds = filteredActionIds.sort((a, b) => b.count - a.count);
 
-  const [selectedIds, setSelectedIds] = useState<string[]>(
-    sortedActionIds.length > 0 ? [sortedActionIds[0].id] : []
-  );
+  if (selectedIds.length === 0 && sortedActionIds.length > 0) {
+    setSelectedIds([sortedActionIds[0].id]);
+  }
 
   const handleCheckboxChange = (id: string) => {
     setSelectedIds((prev) =>

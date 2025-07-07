@@ -60,7 +60,7 @@ function CodeBlockWithCopy({ code, onCopy, copied }: { code: string; onCopy: () 
   );
 }
 
-function CopyPromptCard({ apiKey }: { apiKey: string | undefined }) {
+function CopyPromptCard() {
   const [copied, setCopied] = useState(false);
   const react = frameworks.find(f => f.key === "react");
   const nextjs = frameworks.find(f => f.key === "nextjs");
@@ -121,7 +121,7 @@ export default function OnboardingDocs({ projectId }: OnboardingDocsProps) {
 
   return (
     <div className="max-w-2xl mx-auto my-8">
-      <CopyPromptCard apiKey={projectDetail?.publicApiKey} />
+      <CopyPromptCard />
       <Card className="p-6 dark:bg-[#23272f] dark:border-gray-800">
         <h1 className="text-2xl font-bold mb-6 dark:text-white">API Quickstart</h1>
         {/* API Key Section */}
