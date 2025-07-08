@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { ActionId } from "@/types";
 
 interface ActionIdsChartProps {
@@ -8,37 +8,63 @@ interface ActionIdsChartProps {
 function formatActionLabel(id: string) {
   const parts = id.split("_");
   if (parts.length <= 1) return id;
-  const label = parts.slice(1).join(" ");
+  const label = parts.join(" ");
   return label.charAt(0).toUpperCase() + label.slice(1);
 }
 
 export function ActionIdsChart({ actionIds }: ActionIdsChartProps) {
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
 
+  const filteredActionIds = useMemo(() => 
+    actionIds?.filter(
+      (a) =>
+        !a.id.startsWith("input") &&
+        !a.id.startsWith("scrolled") &&
+        !(a.id.includes("clicked") && a.id.includes("input")) &&
+        !a.id.includes("element")
+    ) || [], [actionIds]
+  );
+
+  const sortedActionIds = useMemo(() => 
+    filteredActionIds.sort((a, b) => b.count - a.count), [filteredActionIds]
+  );
+
+  useEffect(() => {
+    if (!actionIds || actionIds.length === 0) {
+      return;
+    }
+
+    const savedSelectedIds = localStorage.getItem('selectedActionIds');
+    if (savedSelectedIds) {
+      const parsedIds = JSON.parse(savedSelectedIds);
+      const validIds = parsedIds.filter((id: string) => 
+        sortedActionIds.some(action => action.id === id)
+      );
+      if (validIds.length > 0) {
+        setSelectedIds(validIds);
+      } else if (sortedActionIds.length > 0) {
+        setSelectedIds([sortedActionIds[0].id]);
+      }
+    } else if (sortedActionIds.length > 0) {
+      setSelectedIds([sortedActionIds[0].id]);
+    }
+  }, [actionIds, sortedActionIds]);
+
   if (!actionIds || actionIds.length === 0) {
     return null;
   }
-
-  const filteredActionIds = actionIds.filter(
-    (a) =>
-      !a.id.startsWith("input") &&
-      !a.id.startsWith("scrolled") &&
-      !(a.id.includes("clicked") && a.id.includes("input")) &&
-      !a.id.includes("element")
-  );
-
-  const sortedActionIds = filteredActionIds.sort((a, b) => b.count - a.count);
 
   if (selectedIds.length === 0 && sortedActionIds.length > 0) {
     setSelectedIds([sortedActionIds[0].id]);
   }
 
   const handleCheckboxChange = (id: string) => {
-    setSelectedIds((prev) =>
-      prev.includes(id)
-        ? prev.filter((x) => x !== id)
-        : [...prev, id]
-    );
+    const newSelectedIds = selectedIds.includes(id)
+      ? selectedIds.filter((x) => x !== id)
+      : [...selectedIds, id];
+    
+    setSelectedIds(newSelectedIds);
+    localStorage.setItem('selectedActionIds', JSON.stringify(newSelectedIds));
   };
 
   const selectedActionIds = sortedActionIds.filter((a) => selectedIds.includes(a.id));
