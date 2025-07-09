@@ -2,7 +2,8 @@ import { openai } from "@ai-sdk/openai";
 import { frontendTools } from "@assistant-ui/react-ai-sdk";
 import { streamText } from "ai";
 import { z } from "zod";
-import { getRagAnswer } from '../../../lib/utils';
+import { getRagAnswer, getActionIdMetrics } from '../../../lib/utils';
+import { ActionId } from "@/types";
 
 export const runtime = "edge";
 export const maxDuration = 30;
@@ -10,35 +11,39 @@ export const maxDuration = 30;
 export async function POST(req: Request) {
   const { messages, tools, actionIds, projectId } = await req.json();
 
+  const actionIdsString = actionIds.map((action: ActionId ) => action.id).join(", ");
+
   const system = `
  You are an AI assistant that analyzes user session replay data to answer questions about user behavior.
 Your task is to analyze session replay data and provide clear, evidence-based answers about what users were doing, their goals, and any issues they encountered.
 
-Available Action IDs: ${JSON.stringify(actionIds || [])}
+Available Action IDs: ${actionIdsString}
 
 IMPORTANT: When users ask questions about specific actions or behaviors, you should use the getRelavantReplayData tool with the appropriate actionId to retrieve the relevant session replay logs. This will give you the most accurate and up-to-date information about user behavior.
-
 The data returned will include context events organized by session, showing the user's journey and actions leading up to and following the target action.
 
+For questions about metrics, performance data, or quantitative analysis of user actions, use the getActionIdMetrics tool to retrieve statistical information about specific action IDs.
+
+You can and should use both tools sequentially when appropriate - for example, first get metrics to understand the quantitative performance, then get replay data to understand the qualitative user behavior and context.
+
 Guidelines:
-1. Use action IDs to retrieve relevant logs when analyzing specific user actions or behaviors
-2. Analyze the context events to understand the full user journey around the target action
-3. Pay attention to timestamps to understand the sequence and timing of user actions
-4. Identify patterns in user behavior across multiple sessions if present
-5. Look for user frustrations (repeated clicks, scrolling, etc.) or successful interactions
-6. Consider the element types and action strings to understand what users were interacting with
-7. Provide specific, actionable insights based on the evidence
-8. Be clear about what the user was doing, when, and why
-9. If the data doesn't contain enough information, acknowledge this
-10. Use the timing information to understand the user's journey and flow
-11. For pattern analysis, look for common behaviors, issues, or trends across sessions
-12. Be concise but thorough in your analysis
-13. Always use the getRelavantReplayData tool when you need to access session replay data
-14. When analyzing the data, consider the user's intent and goals based on their actions
+1. Use getRelavantReplayData for detailed session replay logs and qualitative analysis
+2. Use getActionIdMetrics for quantitative metrics, statistics, and performance data
+3. Use both tools sequentially when appropriate - metrics first, then replay data for comprehensive analysis
+4. Analyze context events to understand the full user journey around target actions
+5. Pay attention to timestamps to understand sequence and timing of user actions
+6. Identify patterns in user behavior across multiple sessions
+7. Look for user frustrations (repeated clicks, scrolling) or successful interactions
+8. Consider element types and action strings to understand user interactions
+9. Provide specific, actionable insights based on evidence
+10. Be clear about what users were doing, when, and why
+11. If data is insufficient, acknowledge limitations
+12. For complex questions, combine quantitative metrics with qualitative replay data
+13. Be concise but thorough in analysis
   `;
 
   const result = streamText({
-    maxSteps: 5,
+    maxSteps: 10,
     model: openai("gpt-4.1"),
     messages,
     toolCallStreaming: true,
@@ -55,6 +60,16 @@ Guidelines:
           return answer.context_events_by_session;
         },
       },
+      getActionIdMetrics: {
+        description: "Retrieve metrics for a specific action ID",
+        parameters: z.object({
+          actionId: z.string(),
+        }),
+        execute: async ({ actionId }) => {
+          const metrics = await getActionIdMetrics(actionIds, actionId);
+          return metrics;
+        },
+      },  
     },
   });
 

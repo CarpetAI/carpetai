@@ -15,18 +15,18 @@ function formatActionLabel(id: string) {
 export function ActionIdsChart({ actionIds }: ActionIdsChartProps) {
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
 
-  const filteredActionIds = useMemo(() => 
-    actionIds?.filter(
-      (a) =>
-        !a.id.startsWith("input") &&
-        !a.id.startsWith("scrolled") &&
-        !(a.id.includes("clicked") && a.id.includes("input")) &&
-        !a.id.includes("element")
-    ) || [], [actionIds]
-  );
+  // const filteredActionIds = useMemo(() => 
+  //   actionIds?.filter(
+  //     (a) =>
+  //       !a.id.startsWith("input") &&
+  //       !a.id.startsWith("scrolled") &&
+  //       !(a.id.includes("clicked") && a.id.includes("input")) &&
+  //       !a.id.includes("element")
+  //   ) || [], [actionIds]
+  // );
 
   const sortedActionIds = useMemo(() => 
-    filteredActionIds.sort((a, b) => b.count - a.count), [filteredActionIds]
+    actionIds.sort((a, b) => b.count - a.count), [actionIds]
   );
 
   useEffect(() => {
@@ -113,11 +113,6 @@ export function ActionIdsChart({ actionIds }: ActionIdsChartProps) {
               <span className="text-xs text-gray-500 mt-1">events</span>
             </div>
           ))}
-        </div>
-      )}
-      {filteredActionIds.length > 3 && (
-        <div className="mt-4 text-sm text-gray-500 text-center">
-          +{filteredActionIds.length - 3} more action IDs
         </div>
       )}
     </div>

@@ -51,7 +51,14 @@ export default function SessionReplaysPage() {
     });
 
     getProjectActionIds(projectId).then((data) => {
-      setActionIds(data);
+      const filteredActionIds = data.filter((actionId: ActionId) => {
+        const actionIdString = actionId.id;
+        return !actionIdString.startsWith('input') && 
+               !actionIdString.startsWith('clicked_input') && 
+               !actionIdString.includes('element') && 
+               !actionIdString.startsWith('scrolled');
+      });
+      setActionIds(filteredActionIds);
     });
   }, [projectId]);
 

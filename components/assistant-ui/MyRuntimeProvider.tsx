@@ -18,7 +18,7 @@ export function MyRuntimeProvider({
   const runtime = useChatRuntime({
     api: "/api/chat",
     body: {
-      actionIds: actionIds?.map(action => action.id),
+      actionIds: actionIds,
       projectId: projectId,
     },
   });

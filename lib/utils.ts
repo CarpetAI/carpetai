@@ -98,3 +98,12 @@ export const getProjectActionIds = async (projectId: string): Promise<ActionId[]
     return [];
   }
 };
+
+// TODO: Reach out to backend for more sophisticated metrics
+export const getActionIdMetrics = async (actionIds: ActionId[], actionId: string): Promise<any> => {
+  const action = actionIds.find(action => action.id === actionId);
+  if (!action) {
+    return null;
+  }
+  return action;
+};
