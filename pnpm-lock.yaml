@@ -23,6 +23,12 @@ importers:
       '@assistant-ui/react-markdown':
         specifier: ^0.10.5
         version: 0.10.5(@assistant-ui/react@0.10.24(@types/react-dom@19.1.6(@types/react@19.1.8))(@types/react@19.1.8)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(use-sync-external-store@1.5.0(react@19.1.0)))(@types/react-dom@19.1.6(@types/react@19.1.8))(@types/react@19.1.8)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
+      '@carpetai/rrweb-recorder':
+        specifier: ^1.4.0
+        version: 1.4.0(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
+      '@carpetai/rrweb-recorder-nextjs':
+        specifier: ^1.2.3
+        version: 1.2.3(next@15.3.4(@opentelemetry/api@1.9.0)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       '@clerk/nextjs':
         specifier: ^6.23.1
         version: 6.23.1(next@15.3.4(@opentelemetry/api@1.9.0)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
@@ -201,6 +207,19 @@ packages:
   '@babel/runtime@7.27.6':
     resolution: {integrity: sha512-vbavdySgbTTrmFE+EsiqUTzlOr5bzlnJtUv9PynGCAKvfQqjIXbvFdumPM/GxMDfyuGMJaJAU6TO4zc1Jf1i8Q==}
     engines: {node: '>=6.9.0'}
+
+  '@carpetai/rrweb-recorder-nextjs@1.2.3':
+    resolution: {integrity: sha512-e9JPAqLRLriF07GB4OpUl+RNEDSF4iMmdvD/3aI3vjzx6k+3hbJ+yzQ6OhUcn5SfOlMlW5zDy5FQ2RlzUF7kIQ==}
+    peerDependencies:
+      next: '>=13.0.0'
+      react: '>=16.8.0'
+      react-dom: '>=16.8.0'
+
+  '@carpetai/rrweb-recorder@1.4.0':
+    resolution: {integrity: sha512-w38xJqicJUSWFAJFZ7XkSOFr8C+1i5m7Xv01Z3vFOJhg0KwmooMCp5N/NtlgnVCFhdAzcVF/DDZcJcT8ZhpB1Q==}
+    peerDependencies:
+      react: '>=16.8.0'
+      react-dom: '>=16.8.0'
 
   '@clerk/backend@2.3.0':
     resolution: {integrity: sha512-QkvJOF6nshJ9TkCjdXKY2MDWv29/TefIop350sXMpIrN1fIJIWzdFEnIjd4PCINSySPSctlRybL51Z8G/aTusg==}
@@ -3092,6 +3111,19 @@ snapshots:
       - use-sync-external-store
 
   '@babel/runtime@7.27.6': {}
+
+  '@carpetai/rrweb-recorder-nextjs@1.2.3(next@15.3.4(@opentelemetry/api@1.9.0)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(react-dom@19.1.0(react@19.1.0))(react@19.1.0)':
+    dependencies:
+      '@carpetai/rrweb-recorder': 1.4.0(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
+      next: 15.3.4(@opentelemetry/api@1.9.0)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
+      react: 19.1.0
+      react-dom: 19.1.0(react@19.1.0)
+
+  '@carpetai/rrweb-recorder@1.4.0(react-dom@19.1.0(react@19.1.0))(react@19.1.0)':
+    dependencies:
+      react: 19.1.0
+      react-dom: 19.1.0(react@19.1.0)
+      rrweb: 2.0.0-alpha.4
 
   '@clerk/backend@2.3.0(react-dom@19.1.0(react@19.1.0))(react@19.1.0)':
     dependencies:

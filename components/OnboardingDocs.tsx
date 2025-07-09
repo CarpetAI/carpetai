@@ -122,6 +122,24 @@ export default function OnboardingDocs({ projectId }: OnboardingDocsProps) {
   return (
     <div className="max-w-2xl mx-auto my-8">
       <CopyPromptCard />
+      
+      {/* GitHub Link */}
+      <div className="mb-6 p-4 rounded-lg border border-gray-200 dark:border-gray-800 bg-gray-50 dark:bg-gray-900">
+        <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
+          <span>📚</span>
+          <span>Need more help? Check out the</span>
+          <a 
+            href="https://github.com/CarpetAI/carpetai-rrwebrecorder" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            className="text-blue-600 dark:text-blue-400 hover:underline font-medium"
+          >
+            GitHub repository
+          </a>
+          <span>for detailed documentation and examples.</span>
+        </div>
+      </div>
+      
       <Card className="p-6 dark:bg-[#23272f] dark:border-gray-800">
         <h1 className="text-2xl font-bold mb-6 dark:text-white">API Quickstart</h1>
         {/* API Key Section */}
