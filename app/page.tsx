@@ -47,10 +47,17 @@ export default function Home() {
             </a>
           </div>
         </div>
-        {/* Video Placeholder Section */}
+        {/* Video Section */}
         <div className="relative z-10 w-full max-w-3xl flex flex-col items-center mb-16">
-          <div className="w-full h-64 bg-gray-100 border-2 border-dashed border-blue-300 rounded-2xl flex items-center justify-center">
-            <span className="text-lg text-blue-500 font-semibold">Watch how it works (video placeholder)</span>
+          <div className="w-full aspect-video rounded-2xl overflow-hidden shadow-lg">
+            <iframe
+              src="https://www.youtube.com/embed/ZXLdtYngS7A"
+              title="CartpetAI Demo"
+              className="w-full h-full"
+              frameBorder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+            />
           </div>
         </div>
       </main>
