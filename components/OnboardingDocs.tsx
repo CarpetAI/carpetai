@@ -139,6 +139,28 @@ export default function OnboardingDocs({ projectId }: OnboardingDocsProps) {
           <span>for detailed documentation and examples.</span>
         </div>
       </div>
+
+      {/* Localhost Info */}
+      <div className="mb-6 p-4 rounded-lg border border-blue-200 dark:border-blue-800 bg-blue-50 dark:bg-blue-900/20">
+        <div className="flex items-start gap-2 text-sm text-blue-700 dark:text-blue-300">
+          <span>💡</span>
+          <div>
+            <span className="font-medium">To record sessions on localhost:</span>
+            <span> Set </span>
+            <code className="bg-blue-100 dark:bg-blue-800 px-1 rounded text-xs">excludePaths: []</code>
+            <span> to enable recording. See more info on the </span>
+            <a 
+              href="https://github.com/CarpetAI/carpetai-rrwebrecorder" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="text-blue-600 dark:text-blue-400 hover:underline font-medium"
+            >
+              GitHub repository
+            </a>
+            <span>.</span>
+          </div>
+        </div>
+      </div>
       
       <Card className="p-6 dark:bg-[#23272f] dark:border-gray-800">
         <h1 className="text-2xl font-bold mb-6 dark:text-white">API Quickstart</h1>
