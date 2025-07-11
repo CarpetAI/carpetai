@@ -1,7 +1,7 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
-import { getSessionReplayIds, getSessionReplayEvents, getProjectDetail, getProjectActionIds } from '../../../lib/utils';
+import React, { useEffect, useRef, useState } from "react";
+import { getSessionReplayIds, getSessionReplayEvents, getProjectDetail, getProjectActionIds, getProjectInsights } from '../../../lib/utils';
 import { MyRuntimeProvider } from "@/components/assistant-ui/MyRuntimeProvider";
 import { Thread } from "@/components/assistant-ui/thread";
 import { SignedIn, UserButton } from "@clerk/nextjs";
@@ -11,6 +11,7 @@ import OnboardingDocs from "@/components/OnboardingDocs";
 import { Button } from "@/components/ui/button";
 import { ProjectDetail, ActionId } from "@/types";
 import { ActionIdsChart } from "@/components/ActionIdsChart";
+import { GeneralInsightsCard, GeneralInsight } from "@/components/GeneralInsightsCard";
 
 interface eventWithTime {
   type: number;
@@ -36,6 +37,10 @@ export default function SessionReplaysPage() {
   const [sessionsLoading, setSessionsLoading] = useState(true);
   const [projectDetail, setProjectDetail] = useState<ProjectDetail | null>(null);
   const [actionIds, setActionIds] = useState<ActionId[]>([]);
+  const [generalInsights, setGeneralInsights] = useState<GeneralInsight[]>([]);
+
+  const chatInputRef = useRef<HTMLInputElement | null>(null);
+  const chatSectionRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     if (!projectId) return;
@@ -60,6 +65,10 @@ export default function SessionReplaysPage() {
       });
       setActionIds(filteredActionIds);
     });
+
+    getProjectInsights(projectId).then((insights) => {
+      setGeneralInsights(insights);
+    });
   }, [projectId]);
 
   const handleSelectSession = async (session: SessionMeta) => {
@@ -69,6 +78,13 @@ export default function SessionReplaysPage() {
     const events = await getSessionReplayEvents(session.sessionId);
     setEvents(events as eventWithTime[]);
     setLoading(false);
+  };
+
+  const handleTalkToChat = (insight: GeneralInsight) => {
+    if (chatSectionRef.current) {
+      chatSectionRef.current.scrollIntoView({ behavior: 'smooth' });
+    }
+    console.log('Pasting to chat:', insight.title + ' ' + insight.description);
   };
 
   return (
@@ -96,7 +112,7 @@ export default function SessionReplaysPage() {
             <p className="text-gray-600">Session Replays</p>
           </div>
         )}
-        
+        <GeneralInsightsCard insights={generalInsights} onTalkToChat={handleTalkToChat} />
         <ActionIdsChart actionIds={actionIds} />
         {sessionsLoading ? (
           <div className="flex justify-center items-center py-12">
@@ -191,7 +207,7 @@ export default function SessionReplaysPage() {
             <div className="px-4 py-3 border-b border-gray-100">
               <h2 className="text-base font-semibold">AI Assistant</h2>
             </div>
-            <div className="flex-1 overflow-hidden">
+            <div className="flex-1 overflow-hidden" ref={chatSectionRef}>
               <MyRuntimeProvider projectId={projectId} actionIds={actionIds}>
                 <Thread />
               </MyRuntimeProvider>

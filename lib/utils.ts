@@ -4,6 +4,7 @@ import { twMerge } from "tailwind-merge"
 import { API_URL } from './constants';
 import { ActionId, Project } from '@/types';
 import { ProjectDetail } from '@/types';
+import { GeneralInsight } from '@/types';
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
@@ -99,7 +100,16 @@ export const getProjectActionIds = async (projectId: string): Promise<ActionId[]
   }
 };
 
-// TODO: Reach out to backend for more sophisticated metrics
+export const getProjectInsights = async (projectId: string): Promise<GeneralInsight[]> => {
+  try {
+    const response = await axios.get(`${API_URL}/api/projects/${projectId}/insights`);
+    return response.data.insights || [];
+  } catch (error) {
+    console.error('Error fetching project insights:', error);
+    return [];
+  }
+};
+
 export const getActionIdMetrics = async (actionIds: ActionId[], actionId: string): Promise<any> => {
   const action = actionIds.find(action => action.id === actionId);
   if (!action) {
