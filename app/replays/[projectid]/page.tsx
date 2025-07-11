@@ -39,7 +39,7 @@ export default function SessionReplaysPage() {
   const [actionIds, setActionIds] = useState<ActionId[]>([]);
   const [generalInsights, setGeneralInsights] = useState<GeneralInsight[]>([]);
 
-  const chatInputRef = useRef<HTMLInputElement | null>(null);
+  // const chatInputRef = useRef<HTMLInputElement | null>(null);
   const chatSectionRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
