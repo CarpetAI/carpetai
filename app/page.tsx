@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { ActionIdsChart } from "@/components/ActionIdsChart";
+import Image from "next/image";
 
 export default function Home() {
   return (
@@ -7,7 +8,7 @@ export default function Home() {
       <header className="w-full px-8 py-4 flex items-center justify-between bg-[#18162a] border-b border-[#23213a]">
         <div className="flex items-center gap-3">
           <Link href="/" className="flex items-center gap-2 hover:opacity-80 transition">
-            <img src="/logo.jpg" alt="CarpetAI Logo" className="w-8 h-8 rounded-full object-contain bg-white" />
+            <Image src="/logo.jpg" alt="CarpetAI Logo" width={32} height={32} className="w-8 h-8 rounded-full object-contain bg-white" />
             <span className="text-xl font-bold tracking-tight text-white">CarpetAI</span>
           </Link>
         </div>
@@ -85,10 +86,10 @@ export default function Home() {
             </div>
           </div>
           <div className="flex flex-col md:flex-row items-center gap-10">
-            <img src="/replay.png" alt="Session Replay and AI Chat" className="w-full md:w-1/2 rounded-2xl shadow-lg border border-white/10" />
+            <Image src="/replay.png" alt="Session Replay and AI Chat" width={600} height={400} className="w-full md:w-1/2 rounded-2xl shadow-lg border border-white/10" />
             <div className="flex-1 text-center md:text-left">
               <h3 className="text-2xl font-bold text-white mb-3">Watch Session Replays & Ask AI</h3>
-              <p className="text-white/80 mb-4">See exactly how users interact with your product by watching real session replays, then ask AI questions like "Why aren't users using this feature?" or "Where are users dropping off?" to get instant, actionable answers.</p>
+              <p className="text-white/80 mb-4">See exactly how users interact with your product by watching real session replays, then ask AI questions like &quot;Why aren&apos;t users using this feature?&quot; or &quot;Where are users dropping off?&quot; to get instant, actionable answers.</p>
               <a href="/projects" className="inline-block mt-2 px-6 py-2 rounded-lg bg-gradient-to-r from-blue-600 to-purple-600 text-white font-semibold shadow hover:from-blue-700 hover:to-purple-700 transition">Try Replay & AI Chat</a>
             </div>
           </div>
