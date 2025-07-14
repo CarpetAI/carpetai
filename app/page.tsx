@@ -1,6 +1,65 @@
 import Link from "next/link";
 import { ActionIdsChart } from "@/components/ActionIdsChart";
 import Image from "next/image";
+import type { Metadata } from "next";
+
+export async function generateMetadata(): Promise<Metadata> {
+  return {
+    title: "CartpetAI – AI-Powered Session Replay & Analytics",
+    description: "Replay user sessions, analyze user behavior, and get AI-powered insights for your web app. Instantly understand what your users do and why.",
+    keywords: ["session replay", "user analytics", "AI analytics", "user behavior", "web analytics", "product analytics"],
+    authors: [{ name: "CartpetAI Team" }],
+    creator: "CartpetAI",
+    publisher: "CartpetAI",
+    formatDetection: {
+      email: false,
+      address: false,
+      telephone: false,
+    },
+    metadataBase: new URL('https://trycarpetai.com'),
+    alternates: {
+      canonical: '/',
+    },
+    openGraph: {
+      type: 'website',
+      locale: 'en_US',
+      url: 'https://trycarpetai.com',
+      siteName: 'CartpetAI',
+      title: 'CartpetAI – AI-Powered Session Replay & Analytics',
+      description: 'Replay user sessions, analyze user behavior, and get AI-powered insights for your web app. Instantly understand what your users do and why.',
+      images: [
+        {
+          url: 'https://trycarpetai.com/home_render.png',
+          width: 1200,
+          height: 630,
+          alt: 'CartpetAI - AI-Powered Session Replay & Analytics',
+        },
+      ],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: 'CartpetAI – AI-Powered Session Replay & Analytics',
+      description: 'Replay user sessions, analyze user behavior, and get AI-powered insights for your web app. Instantly understand what your users do and why.',
+      images: ['https://trycarpetai.com/home_render.png'],
+      creator: '@cartpetai',
+      site: '@cartpetai',
+    },
+    robots: {
+      index: true,
+      follow: true,
+      googleBot: {
+        index: true,
+        follow: true,
+        'max-video-preview': -1,
+        'max-image-preview': 'large',
+        'max-snippet': -1,
+      },
+    },
+    verification: {
+      google: 'your-google-verification-code',
+    },
+  };
+}
 
 export default function Home() {
   return (
