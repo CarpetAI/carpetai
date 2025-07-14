@@ -46,9 +46,9 @@ export default function ReplaysComp({
   const [events, setEvents] = useState<eventWithTime[]>([]);
   const [loading, setLoading] = useState(false);
   const [sessionsLoading, setSessionsLoading] = useState(false);
-  const [projectDetail, setProjectDetail] = useState<ProjectDetail | null>(initialProjectDetail);
-  const [actionIds, setActionIds] = useState<ActionId[]>(initialActionIds);
-  const [generalInsights, setGeneralInsights] = useState<GeneralInsight[]>(initialGeneralInsights);
+  const [projectDetail] = useState<ProjectDetail | null>(initialProjectDetail);
+  const [actionIds] = useState<ActionId[]>(initialActionIds);
+  const [generalInsights] = useState<GeneralInsight[]>(initialGeneralInsights);
 
   const chatSectionRef = useRef<HTMLDivElement | null>(null);
 

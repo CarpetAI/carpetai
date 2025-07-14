@@ -17,7 +17,7 @@ interface ProjectsCompProps {
 
 export default function ProjectsComp({ initialProjects }: ProjectsCompProps) {
   const { user } = useUser();
-  const [projects, setProjects] = useState<Project[]>(initialProjects);
+  const [projects] = useState<Project[]>(initialProjects);
   const [showCreateForm, setShowCreateForm] = useState(false);
   const [creating, setCreating] = useState(false);
   const router = useRouter();
