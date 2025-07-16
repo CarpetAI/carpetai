@@ -163,6 +163,54 @@ export default function Home() {
               <a href="/projects" className="inline-block mt-2 px-6 py-2 rounded-lg bg-gradient-to-r from-blue-600 to-purple-600 text-white font-semibold shadow hover:from-blue-700 hover:to-purple-700 transition">Try Replay & AI Chat</a>
             </div>
           </div>
+          
+          <div className="flex flex-col md:flex-row-reverse items-center gap-10">
+            <div className="flex-1 text-center md:text-left">
+              <h3 className="text-2xl font-bold text-white mb-3 flex items-center justify-center md:justify-start gap-2">
+                <span>Install in 2 Minutes</span>
+                <span className="inline-block align-middle">
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-7 h-7 text-green-400">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                </span>
+              </h3>
+              <p className="text-white/80 mb-6">Get started with just one line of code. No complex setup required.</p>
+              
+              <div className="space-y-4">
+                <div className="bg-black/20 border border-white/10 rounded-lg p-4">
+                  <div className="text-white/60 text-sm mb-2">React</div>
+                  <div className="bg-gray-900 rounded p-3 font-mono text-sm text-green-400">
+                    npm install @carpetai/rrweb-recorder
+                  </div>
+                  <div className="bg-gray-900 rounded p-3 font-mono text-sm text-blue-400 mt-2">
+                    &lt;SessionRecorder apiKey="your-key" /&gt;
+                  </div>
+                </div>
+                
+                <div className="bg-black/20 border border-white/10 rounded-lg p-4">
+                  <div className="text-white/60 text-sm mb-2">Next.js</div>
+                  <div className="bg-gray-900 rounded p-3 font-mono text-sm text-green-400">
+                    npm install @carpetai/rrweb-recorder-nextjs
+                  </div>
+                  <div className="bg-gray-900 rounded p-3 font-mono text-sm text-blue-400 mt-2">
+                    &lt;SessionRecorder apiKey="your-key" /&gt;
+                  </div>
+                </div>
+              </div>
+              
+              <div className="mt-6 text-center md:text-left">
+                <a href="/projects" className="inline-block px-6 py-2 rounded-lg bg-gradient-to-r from-blue-600 to-purple-600 text-white font-semibold shadow hover:from-blue-700 hover:to-purple-700 transition">Get Your API Key</a>
+                <a 
+                  href="https://github.com/CarpetAI/carpetai-rrwebrecorder" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="inline-block ml-4 px-6 py-2 rounded-lg border border-white/20 text-white font-semibold hover:bg-white/10 transition"
+                >
+                  View Docs
+                </a>
+              </div>
+            </div>
+          </div>
         </section>
       </main>
 
