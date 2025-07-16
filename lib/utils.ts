@@ -86,9 +86,13 @@ export const getProjectDetail = async (projectId: string): Promise<ProjectDetail
   }
 };
 
-export const getProjectActionIds = async (projectId: string): Promise<ActionId[]> => {
+export const getProjectActionIds = async (projectId: string, options?: { start?: number; end?: number }): Promise<ActionId[]> => {
   try {
+    const params: any = {};
+    if (options?.start) params.start = options.start;
+    if (options?.end) params.end = options.end;
     const response = await axios.get(`${API_URL}/api/projects/${projectId}/action-ids`, {
+      params,
       headers: {
         'ngrok-skip-browser-warning': 'true',
       },

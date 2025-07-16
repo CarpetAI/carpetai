@@ -1,7 +1,7 @@
 "use client";
 
-import React, { useRef, useState } from "react";
-import { getSessionReplayEvents } from "../../lib/utils";
+import React, { useRef, useState, useEffect } from "react";
+import { getSessionReplayEvents, getProjectActionIds } from "../../lib/utils";
 import { MyRuntimeProvider } from "@/components/assistant-ui/MyRuntimeProvider";
 import { Thread } from "@/components/assistant-ui/thread";
 import Link from "next/link";
@@ -11,6 +11,7 @@ import { ProjectDetail, ActionId } from "@/types";
 import { ActionIdsChart } from "@/components/ActionIdsChart";
 import { GeneralInsightsCard, GeneralInsight } from "@/components/GeneralInsightsCard";
 import Header from "@/components/common/Header";
+import TimeRangeSelector from "@/components/ui/replays/TimeRangeSelector";
 
 interface eventWithTime {
   type: number;
@@ -47,10 +48,30 @@ export default function ReplaysComp({
   const [loading, setLoading] = useState(false);
   const [sessionsLoading, setSessionsLoading] = useState(false);
   const [projectDetail] = useState<ProjectDetail | null>(initialProjectDetail);
-  const [actionIds] = useState<ActionId[]>(initialActionIds);
+  const [actionIds, setActionIds] = useState<ActionId[]>(initialActionIds);
   const [generalInsights] = useState<GeneralInsight[]>(initialGeneralInsights);
+  const [timeRange, setTimeRange] = useState<{ label: string; start?: number; end?: number }>({ label: 'Default' });
+  const [actionIdsLoading, setActionIdsLoading] = useState(false);
+
+  useEffect(() => {
+    const savedTimeRange = localStorage.getItem('selectedTimeRange');
+    if (savedTimeRange) {
+      const parsed = JSON.parse(savedTimeRange);
+      setTimeRange(parsed);
+      handleTimeRangeChange(parsed);
+    }
+  }, []);
 
   const chatSectionRef = useRef<HTMLDivElement | null>(null);
+
+  const handleTimeRangeChange = async (range: { label: string; start?: number; end?: number }) => {
+    setTimeRange(range);
+    localStorage.setItem('selectedTimeRange', JSON.stringify(range));
+    setActionIdsLoading(true);
+    const data = await getProjectActionIds(projectId, { start: range.start, end: range.end });
+    setActionIds(data);
+    setActionIdsLoading(false);
+  };
 
   const handleSelectSession = async (session: SessionMeta) => {
     setSelectedSession(session);
@@ -97,7 +118,27 @@ export default function ReplaysComp({
           </div>
         )}
         <GeneralInsightsCard insights={generalInsights} onTalkToChat={handleTalkToChat} />
-        <ActionIdsChart actionIds={actionIds} />
+        <div className="mb-2">
+          <TimeRangeSelector selectedLabel={timeRange.label} onChange={handleTimeRangeChange} loading={actionIdsLoading} />
+          {(timeRange.start && timeRange.end) && (
+            <div className="text-base text-gray-900 font-medium mt-1 ml-1">
+              {`${new Date(timeRange.start * 1000).toLocaleDateString()} – ${new Date(timeRange.end * 1000).toLocaleDateString()}`}
+            </div>
+          )}
+        </div>
+        {actionIdsLoading ? (
+          <div className="flex justify-center items-center py-8">
+            <div className="flex items-center gap-2 text-gray-600">
+              <svg className="animate-spin h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+              </svg>
+              <span>Loading action IDs...</span>
+            </div>
+          </div>
+        ) : (
+          <ActionIdsChart actionIds={actionIds} />
+        )}
         {sessionsLoading ? (
           <div className="flex justify-center items-center py-12">
             <div className="text-gray-600">Loading sessions...</div>
