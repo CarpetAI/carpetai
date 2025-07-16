@@ -183,7 +183,7 @@ export default function Home() {
                     npm install @carpetai/rrweb-recorder
                   </div>
                   <div className="bg-gray-900 rounded p-3 font-mono text-sm text-blue-400 mt-2">
-                    &lt;SessionRecorder apiKey="your-key" /&gt;
+                    &lt;SessionRecorder apiKey=&quot;your-key&quot; /&gt;
                   </div>
                 </div>
                 
@@ -193,7 +193,7 @@ export default function Home() {
                     npm install @carpetai/rrweb-recorder-nextjs
                   </div>
                   <div className="bg-gray-900 rounded p-3 font-mono text-sm text-blue-400 mt-2">
-                    &lt;SessionRecorder apiKey="your-key" /&gt;
+                    &lt;SessionRecorder apiKey=&quot;your-key&quot; /&gt;
                   </div>
                 </div>
               </div>
