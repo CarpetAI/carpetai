@@ -2,6 +2,12 @@
 
 CartpetAI is an open-source platform for session replay, user behavior analysis, and AI-powered insights for web applications.
 
+## 🎥 Demo
+
+Watch our demo video to see CartpetAI in action:
+
+[![CartpetAI Demo](https://img.youtube.com/vi/ZXLdtYngS7A/0.jpg)](https://youtu.be/ZXLdtYngS7A)
+
 ## Features
 
 - 🎥 **Session Replay** - Record and replay user sessions
