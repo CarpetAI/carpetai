@@ -4,6 +4,8 @@ import Image from "next/image";
 import type { Metadata } from "next";
 
 export async function generateMetadata(): Promise<Metadata> {
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://trycarpetai.com/';
+  
   return {
     title: "CartpetAI – AI-Powered Session Replay & Analytics",
     description: "Replay user sessions, analyze user behavior, and get AI-powered insights for your web app. Instantly understand what your users do and why.",
@@ -16,20 +18,20 @@ export async function generateMetadata(): Promise<Metadata> {
       address: false,
       telephone: false,
     },
-    metadataBase: new URL('https://trycarpetai.com'),
+    metadataBase: new URL(siteUrl),
     alternates: {
       canonical: '/',
     },
     openGraph: {
       type: 'website',
       locale: 'en_US',
-      url: 'https://trycarpetai.com',
+      url: siteUrl,
       siteName: 'CartpetAI',
       title: 'CartpetAI – AI-Powered Session Replay & Analytics',
       description: 'Replay user sessions, analyze user behavior, and get AI-powered insights for your web app. Instantly understand what your users do and why.',
       images: [
         {
-          url: 'https://trycarpetai.com/home_render.png',
+          url: `${siteUrl}/home_render.png`,
           width: 1200,
           height: 630,
           alt: 'CartpetAI - AI-Powered Session Replay & Analytics',
@@ -40,7 +42,7 @@ export async function generateMetadata(): Promise<Metadata> {
       card: 'summary_large_image',
       title: 'CartpetAI – AI-Powered Session Replay & Analytics',
       description: 'Replay user sessions, analyze user behavior, and get AI-powered insights for your web app. Instantly understand what your users do and why.',
-      images: ['https://trycarpetai.com/home_ir.png'],
+      images: [`${siteUrl}/home_render.png`],
       creator: '@cartpetai',
       site: '@cartpetai',
     },

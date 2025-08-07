@@ -86,7 +86,6 @@ export default function ReplaysComp({
     if (chatSectionRef.current) {
       chatSectionRef.current.scrollIntoView({ behavior: 'smooth' });
     }
-    console.log('Pasting to chat:', insight.title + ' ' + insight.description);
   };
 
   const handleRefreshSessions = async () => {

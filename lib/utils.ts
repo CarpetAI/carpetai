@@ -13,12 +13,8 @@ export function cn(...inputs: ClassValue[]) {
 
 export const getSessionReplayIds = async (projectId: string): Promise<unknown[]> => {
   try {
-    console.log('API_URL', API_URL);
     const response = await axios.get(`${API_URL}/api/session-ids`, {
       params: { project_id: projectId },
-      headers: {
-        'ngrok-skip-browser-warning': 'true',
-      },
     });
     return response.data.sessions;
   } catch (error) {
@@ -29,11 +25,7 @@ export const getSessionReplayIds = async (projectId: string): Promise<unknown[]>
 
 export const getSessionReplayEvents = async (sessionId: string): Promise<unknown[]> => {
   try {
-    const response = await axios.get(`${API_URL}/api/sessions/${sessionId}/events`, {
-      headers: {
-        'ngrok-skip-browser-warning': 'true',
-      },
-    });
+    const response = await axios.get(`${API_URL}/api/sessions/${sessionId}/events`);
     return response.data.events || [];
   } catch (error) {
     console.error('Error fetching session replay events:', error);
@@ -93,9 +85,6 @@ export const getProjectActionIds = async (projectId: string, options?: { start?:
     if (options?.end) params.end = options.end;
     const response = await axios.get(`${API_URL}/api/projects/${projectId}/action-ids`, {
       params,
-      headers: {
-        'ngrok-skip-browser-warning': 'true',
-      },
     });
     return response.data.action_ids || [];
   } catch (error) {
